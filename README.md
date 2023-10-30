@@ -47,7 +47,7 @@ import scala.collection.immutable.Seq
 
 # Création des Dataframes:
   ## Création par différentes méthodes:
-   
+  ``` 
   //-------------II. Manipulation des DataFrames-----------------------
   def add_column(df: DataFrame): DataFrame = {
     // Ajouter une nouvelle colonne avec une valeur constante
@@ -180,9 +180,9 @@ import scala.collection.immutable.Seq
     val desc = df.describe("produced_year")
     return desc
   }
-
+```
 ##DataSets:
-
+```
 //---------III. DataSets-------------------------
 // Définir Movie case class
 case class Movie(actor_name: String, movie_title: String, produced_year: Long)
@@ -270,14 +270,14 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     // Ecrire les données dans le format CSV, en utilisant ; comme délimiteur avec overwrite comme mode de sauvegarde df.write.format("csv").mode("overwrite").option("sep", ";").save("E:/Apache Spark / Ateliers_Spark / Atelier 3 / CSV_OUTPUT_2")
     //Écrire les données en utilisant la partition par la colonne produced_year df.write.format("csv").mode("overwrite").option("sep", ";").partitionBy("produced_year").save(" E :/ Apache Spark / Ateliers_Spark / Atelier3 / CSV_OUTPUT_3")
   }
-  
+  ```
 
 <p align="center">
      <img src="image/base-donnée.png">
    </p>
 
 #Fonction Main appel aux objets:
-
+```
   def main(args: Array[String]): Unit = {
       val spark = getConfiguration()
       val df = createDF_fromSeq(spark)
@@ -362,7 +362,7 @@ val df3 = createDF_byRow(spark)
   }
 }
 
-
+```
  <!-- PROJECT LOGO -->
 <br />
 <div align="center">
