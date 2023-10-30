@@ -30,7 +30,7 @@ L'objectif principal de cette première section est de présenter les bases de S
 
   
 - # [Code et Outputs](#code_et_outputs)
-   ## Librairies:
+   ## Librairies et Config:
 ```scala
 import org.apache.spark.sql.functions.{col, count, lit}
 import org.apache.spark.sql.types.StructType
