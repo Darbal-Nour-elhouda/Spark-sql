@@ -47,7 +47,7 @@ import scala.collection.immutable.Seq
 
 # Création des Dataframes:
   ## Création par différentes méthodes:
-   ```scala
+   
   //-------------II. Manipulation des DataFrames-----------------------
   def add_column(df: DataFrame): DataFrame = {
     // Ajouter une nouvelle colonne avec une valeur constante
@@ -180,10 +180,9 @@ import scala.collection.immutable.Seq
     val desc = df.describe("produced_year")
     return desc
   }
-```
+
 ##DataSets:
-```
- ```scala
+
 //---------III. DataSets-------------------------
 // Définir Movie case class
 case class Movie(actor_name: String, movie_title: String, produced_year: Long)
@@ -272,23 +271,22 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     //Écrire les données en utilisant la partition par la colonne produced_year df.write.format("csv").mode("overwrite").option("sep", ";").partitionBy("produced_year").save(" E :/ Apache Spark / Ateliers_Spark / Atelier3 / CSV_OUTPUT_3")
   }
   
-```
+
 <p align="center">
      <img src="image/base-donnée.png">
    </p>
 
 #Fonction Main appel aux objets:
-``````scala
+
   def main(args: Array[String]): Unit = {
       val spark = getConfiguration()
-
-    val df = createDF_fromSeq(spark)
+      val df = createDF_fromSeq(spark)
     df.printSchema()
 
-    val df2 = createDF_fromSeq_V2(spark)
+val df2 = createDF_fromSeq_V2(spark)
     df2.printSchema()
 
-    val df3 = createDF_byRow(spark)
+val df3 = createDF_byRow(spark)
     df3.printSchema()
 
     val df4 = createDF_CSV(spark,"C:/Users/noure/OneDrive/Bureau/S9/Megadonné/datasets/Movies.csv")
@@ -364,7 +362,6 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
   }
 }
 
-```
 
  <!-- PROJECT LOGO -->
 <br />
