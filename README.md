@@ -15,7 +15,7 @@
   <summary>Table of Contents</summary>
   <ol>
         <li><a href="#introduction">Introduction</a></li>
-        <li><a href="#code et outputs">Code et Outputs</a></li>
+        <li><a href="#code_et_outputs">Code et Outputs</a></li>
        
   </ol>
 </details>
@@ -23,7 +23,7 @@
 - # [Introduction](#Introduction)
  
 
-- # [Code et Outputs](#code et outputs)
+- # [Code et Outputs](#code_et_outputs)
 
 
 <p align="center">
