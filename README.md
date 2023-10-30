@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <img src="image/to_do.png" alt="Logo" width="500" height="400">
+    <img src="sparklogo.jpg" alt="Logo" width="500" height="400">
   
 </div>
 
