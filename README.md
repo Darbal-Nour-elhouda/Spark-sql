@@ -47,7 +47,7 @@ import scala.collection.immutable.Seq
 
 # Création des Dataframes:
   ## Création par différentes méthodes:
-  ``` 
+  ```scala
   //-------------II. Manipulation des DataFrames-----------------------
   def add_column(df: DataFrame): DataFrame = {
     // Ajouter une nouvelle colonne avec une valeur constante
@@ -182,7 +182,7 @@ import scala.collection.immutable.Seq
   }
 ```
 ##DataSets:
-```
+```scala
 //---------III. DataSets-------------------------
 // Définir Movie case class
 case class Movie(actor_name: String, movie_title: String, produced_year: Long)
@@ -277,7 +277,7 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
    </p>
 
 #Fonction Main appel aux objets:
-```
+```scala
   def main(args: Array[String]): Unit = {
       val spark = getConfiguration()
       val df = createDF_fromSeq(spark)
