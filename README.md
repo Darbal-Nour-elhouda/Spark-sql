@@ -31,7 +31,7 @@ L'objectif principal de cette première section est de présenter les bases de S
   
 - # [Code et Outputs](#code_et_outputs)
    ## Librairies:
-  ```scala
+```scala
 import org.apache.spark.sql.functions.{col, count, lit}
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{Column, DataFrame, Dataset, Row, SparkSession, functions}
@@ -42,7 +42,8 @@ import scala.collection.immutable.Seq
   def getConfiguration(): SparkSession = {
     val spark = SparkSession.builder().appName("SparkApp3_Scala").master("local[*]").getOrCreate()
     spark
-  }```
+  }
+```
 
 
 # Création des Dataframes:
