@@ -16,7 +16,7 @@
   <ol>
         <li><a href="#introduction">Introduction</a></li>
         <li><a href="#objectifs">Objectifs</a></li>
-        <li><a href="#code_et_outputs">Code et Outputs</a></li>
+        <li><a href="#code_et_outputs">code_et_outputs</a></li>
        
   </ol>
 </details>
