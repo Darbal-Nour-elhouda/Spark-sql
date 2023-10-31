@@ -36,7 +36,7 @@ L'objectif principal de cette première section est de présenter les bases de S
   - ### [ Création des Dataframes:](#Création-des-Dataframes:)
   - ### [Manipulation des DataFrames:](#Manipulation-des-DataFrames:)
     
-     # Librairies et Config:
+# Librairies et Config:
 ```scala
 import org.apache.spark.sql.functions.{col, count, lit}
 import org.apache.spark.sql.types.StructType
