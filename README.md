@@ -104,9 +104,12 @@ import scala.collection.immutable.Seq
   }
 ```
 
-![Image 1](image/base-donnée.png.png)
+![Image 1](image/base-donnée.png)
+
 ![Image 2](image/manipulation1.png)
 
+## Manipulation des DataFrames:
+  # Fonctions add,renomer,drop et sample:
 
 ```scala
   //-------------II. Manipulation des DataFrames-----------------------
@@ -146,6 +149,8 @@ import scala.collection.immutable.Seq
 ![Image 3](image/5.png)
 ![Image 4](image/6.png)
 
+ # Fonctions select_Version:
+
 ```scala
   def select_Version(spark : SparkSession, df : DataFrame) : DataFrame = {
     import spark.implicits._
@@ -167,7 +172,9 @@ import scala.collection.immutable.Seq
 </div>
 <div align="center">
     <img src="image/selecteddf.png" alt="Logo" width="500" height="400">
-  
+
+# Fonctions selectExpr_Version:
+
 ```scala
   def selectExpr_Version(df: DataFrame): DataFrame = {
     val df1 = df.selectExpr("*", "(produced_year - (produced_year % 10)) as decade")
@@ -180,7 +187,8 @@ import scala.collection.immutable.Seq
  
 </div>
 
-
+# Fonctions selectExpr_Version2:
+ 
 ```scala
   def selectExpr_Version2(df: DataFrame): DataFrame = {
     val df1 = df.selectExpr("count(distinct(movie_title)) as movies_nbr", " count (distinct(actor_name)) as actors_nbr")
@@ -191,6 +199,8 @@ import scala.collection.immutable.Seq
 <div align="center">
     <img src="image/selectdexp2.png" alt="Logo" width="500" height="400">
 
+ # Fonctions Filtrage:
+ 
 ```scala
   def filtrage(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
@@ -214,6 +224,8 @@ import scala.collection.immutable.Seq
     return df1
   }
 ```
+ # Fonctions Tri:
+
 ```scala
   def tri_fcts(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
@@ -231,6 +243,8 @@ import scala.collection.immutable.Seq
   
 </div>
 
+ # Fonctions Limite:
+
 ```scala
   def limit_fct(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
@@ -245,6 +259,8 @@ import scala.collection.immutable.Seq
 </div>
 <div align="center">
     <img src="image/limit_fct.png" alt="Logo" width="500" height="400">
+
+ # Fonctions Union:
 
 ```scala
   def union_fct(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -287,6 +303,8 @@ import scala.collection.immutable.Seq
     return df4
   }
 ```
+ # Fonctions describe:
+
 ```scala
   def describe_fct(df: DataFrame): DataFrame = {
     val desc = df.describe("produced_year")
@@ -297,7 +315,8 @@ import scala.collection.immutable.Seq
 <div align="center">
     <img src="image/describe.png" alt="Logo" width="500" height="400">
     
-##DataSets:
+## DataSets:
+
 ```scala
 //---------III. DataSets-------------------------
 // Définir Movie case class
@@ -333,6 +352,8 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 </div>
 <div align="center">
     <img src="image/dataset1ET2.png" alt="Logo" width="500" height="400">
+
+  # Fonctions Ds-Filtrage:
   
 ```scala
   def DS_filter(spark: SparkSession, df: DataFrame): Dataset[Movie] = {
@@ -343,9 +364,10 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     return DS_filter
   }
 ```
-</div>
-<div align="center">
-    <img src="image/ds_filter.png" alt="Logo" width="500" height="400">
+![Image 1](image/ds_filter.png)
+  
+
+ # Fonctions DS_Manipulation:
     
 ```scala
   def DS_Manipulation(spark: SparkSession, df: DataFrame): Dataset[(String, Long)] = {
@@ -368,9 +390,10 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
   }
 ```
 
-</div>
-<div align="center">
-    <img src="image/ds_manipulation.png" alt="Logo" width="500" height="400">
+![Image 1](image/ds_manipulation.png)
+    
+
+   # Fonctions SQL_Use_Case:
 
 ```scala
   def SQL_Use_Case(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -401,6 +424,8 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 <div align="center">
     <img src="image/sqlusecase.png" alt="Logo" width="500" height="400">
 
+ # Fonctions sauvegarde_df:
+  
 ```scala
   def sauvegarde_df(spark: SparkSession, df: DataFrame): Unit = {
     // Ecrire les données dans le format CSV, en utilisant # comme délimiteur
@@ -413,11 +438,12 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 <div align="center">
     <img src="image/Sauvegarde-df.png" alt="Logo" width="500" height="400">
 
-<p align="center">
-     <img src="image/base-donnée.png">
-   </p>
 
-#Fonction Main appel aux objets:
+
+# Fonction Main appel aux objets:
+
+En utilisant le main, nous orchestrions l'exécution en suivant une séquence logique d'appels de fonctions. Chaque étape est exécutée de manière ordonnée, conformément à notre plan. Le processus commence par configurer l'environnement Spark pour garantir une gestion optimale des données. Ensuite, nous créons nos DataFrames à partir de différentes sources de données, que nous souhaitons analyser. Par la suite, nous appelons diverses fonctions pour effectuer des opérations de transformation, de filtrage, d'échantillonnage, et bien d'autres encore, sur ces DataFrames.
+
 ```scala
   def main(args: Array[String]): Unit = {
       val spark = getConfiguration()
