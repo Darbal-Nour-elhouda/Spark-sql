@@ -16,7 +16,8 @@
   <ol>
         <li><a href="#introduction">Introduction</a></li>
         <li><a href="#objectifs">Objectifs</a></li>
-        <li><a href="#Code_et_Outputs">Code et Outputs</a></li>
+        <li><a href="#Code-et-Outputs">Code et Outputs</a></li>
+        <li><a href="#Main">Main</a></li>
        
   </ol>
 </details>
@@ -28,9 +29,14 @@ Spark SQL est un élément clé du framework Apache Spark, fournissant une inter
 - # [Objectifs](#Objectifs)
 L'objectif principal de cette première section est de présenter les bases de Spark SQL en mettant en avant son abstraction de base, ses opérations structurées de manipulation de données et les différentes sources de données prises en charge pour la lecture et l'écriture. L'apprentissage de la création de DataFrames par transformation d'un RDD, programmation ou chargement de données de sources externes est l'un des objectifs spécifiques. De plus, il vise à familiariser les participants avec l'utilisation de l'API DataFrame pour des tâches telles que la sélection, le filtrage, le tri et le regroupement de données, l'application de fonctions SQL sur les DataFrames, la conversion des DataFrames en RDD et l'enregistrement des données dans des sources externes.Enfin, cette section présente un aperçu des DataSets qui ont été introduits avec Spark 1.6. Il explique également comment créer des DataFrames à partir de requêtes SQL et comment exécuter ces requêtes sur les données DataFrame. Pour une compréhension approfondie de ces concepts, une connaissance de base de SQL est recommandée.
 
+  -
+- ## [Code et Outputs](#Code-et-Outputs)
   
-- ## [Code et Outputs](#Code_et_Outputs)
-   # Librairies et Config:
+  - ### [ Librairies et Config:](#Librairies-et-Config:)
+  - ### [ Création des Dataframes:](#Création-des-Dataframes:)
+  - ### [Manipulation des DataFrames:](#Manipulation-des-DataFrames:)
+    
+     # Librairies et Config:
 ```scala
 import org.apache.spark.sql.functions.{col, count, lit}
 import org.apache.spark.sql.types.StructType
@@ -47,7 +53,7 @@ import scala.collection.immutable.Seq
 
 
 # Création des Dataframes:
-  ## Création par différentes méthodes:
+  ### Création par différentes méthodes:
 ```scala
     def createDF_fromSeq(spark: SparkSession): DataFrame = {
     import spark.implicits._
@@ -108,7 +114,7 @@ import scala.collection.immutable.Seq
 
 
 # Manipulation des DataFrames:
-  ## Fonctions add,renomer,drop et sample:
+  ### Fonctions add,renomer,drop et sample:
 
 ```scala
   //-------------II. Manipulation des DataFrames-----------------------
@@ -148,7 +154,7 @@ import scala.collection.immutable.Seq
 ![Image 3](image/5.png)
 ![Image 4](image/6.png)
 
- ## Fonctions select_Version:
+ ### Fonctions select_Version:
 
 ```scala
   def select_Version(spark : SparkSession, df : DataFrame) : DataFrame = {
@@ -172,7 +178,7 @@ import scala.collection.immutable.Seq
 <div align="left-align">
     <img src="image/selecteddf.png" alt="Logo" width="500" height="400">
 
-## Fonctions selectExpr_Version:
+### Fonctions selectExpr_Version:
 
 ```scala
   def selectExpr_Version(df: DataFrame): DataFrame = {
@@ -186,7 +192,7 @@ import scala.collection.immutable.Seq
  
 </div>
 
-## Fonctions selectExpr_Version2:
+### Fonctions selectExpr_Version2:
  
 ```scala
   def selectExpr_Version2(df: DataFrame): DataFrame = {
@@ -198,7 +204,7 @@ import scala.collection.immutable.Seq
 <div align="left-align">
     <img src="image/selectdexp2.png" alt="Logo" width="500" height="400">
 
- ## Fonctions Filtrage:
+ ### Fonctions Filtrage:
  
 ```scala
   def filtrage(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -223,7 +229,7 @@ import scala.collection.immutable.Seq
     return df1
   }
 ```
- ## Fonctions Tri:
+ ### Fonctions Tri:
 
 ```scala
   def tri_fcts(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -242,7 +248,7 @@ import scala.collection.immutable.Seq
   
 </div>
 
- ## Fonctions Limite:
+ ### Fonctions Limite:
 
 ```scala
   def limit_fct(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -259,7 +265,7 @@ import scala.collection.immutable.Seq
 <div align="left-align">
     <img src="image/limit_fct.png" alt="Logo" width="500" height="400">
 
- ## Fonctions Union:
+ ### Fonctions Union:
 
 ```scala
   def union_fct(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -302,7 +308,7 @@ import scala.collection.immutable.Seq
     return df4
   }
 ```
- ## Fonctions describe:
+ ### Fonctions describe:
 
 ```scala
   def describe_fct(df: DataFrame): DataFrame = {
@@ -352,7 +358,7 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 <div align="left-align">
     <img src="image/dataset1ET2.png" alt="Logo" width="500" height="400">
 
-  ## Fonctions Ds-Filtrage:
+  ### Fonctions Ds-Filtrage:
   
 ```scala
   def DS_filter(spark: SparkSession, df: DataFrame): Dataset[Movie] = {
@@ -366,7 +372,7 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 ![Image 1](image/ds_filter.png)
   
 
- ## Fonctions DS_Manipulation:
+ ### Fonctions DS_Manipulation:
     
 ```scala
   def DS_Manipulation(spark: SparkSession, df: DataFrame): Dataset[(String, Long)] = {
@@ -392,7 +398,7 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 ![Image 1](image/ds_manipulation.png)
     
 
-   ## Fonctions SQL_Use_Case:
+   ### Fonctions SQL_Use_Case:
 
 ```scala
   def SQL_Use_Case(spark: SparkSession, df: DataFrame): DataFrame = {
@@ -423,7 +429,7 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
 <div align="left-align">
     <img src="image/sqlusecase.png" alt="Logo" width="500" height="400">
 
- ## Fonctions sauvegarde_df:
+ ### Fonctions sauvegarde_df:
   
 ```scala
   def sauvegarde_df(spark: SparkSession, df: DataFrame): Unit = {
@@ -438,8 +444,8 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     <img src="image/Sauvegarde-df.png" alt="Logo" width="500" height="400">
 
 
-
-## Fonction Main appel aux objets:
+- # [Main](#Main)
+### Fonction Main appel aux objets:
 
 En utilisant le main, nous orchestrions l'exécution en suivant une séquence logique d'appels de fonctions. Chaque étape est exécutée de manière ordonnée, conformément à notre plan. Le processus commence par configurer l'environnement Spark pour garantir une gestion optimale des données. Ensuite, nous créons nos DataFrames à partir de différentes sources de données, que nous souhaitons analyser. Par la suite, nous appelons diverses fonctions pour effectuer des opérations de transformation, de filtrage, d'échantillonnage, et bien d'autres encore, sur ces DataFrames.
 
