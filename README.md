@@ -48,7 +48,67 @@ import scala.collection.immutable.Seq
 
 # Création des Dataframes:
   ## Création par différentes méthodes:
-  ```scala
+```scala
+    def createDF_fromSeq(spark: SparkSession): DataFrame = {
+    import spark.implicits._
+    val sc = spark.sparkContext
+    val data = Seq(("1", "Jad", "20"), ("2", "Tim", "19"), ("3", "Nicola", "18"))
+    val etudRDD = sc.parallelize(data)
+    val df = etudRDD.toDF("ID", "Name", "Age")  // Nommez les colonnes ici
+    df
+  }
+
+  def createDF_fromSeq_V2(spark: SparkSession): DataFrame = {
+    import spark.implicits._
+    val sc = spark.sparkContext
+    val data = Seq((1L, "Jad", 20L), (2L, "Tim", 19L), (3L, "Nicola", 18L))
+    val etudRDD = sc.parallelize(data)
+    val df = etudRDD.toDF("ID", "Name", "Age")  // Nommez les colonnes ici et définissez les types de données
+    df
+  }
+  def createDF_byRow(spark: SparkSession) : DataFrame = {
+    val sc = spark.sparkContext
+    val etudRDD = sc.parallelize(List(Row(1L, "Jad", 20L), Row(2L, "Tim", 19L), Row(3L, "Nicola", 18L)))
+    val schema = StructType(Array(StructField("ID", LongType,true), StructField("Name", StringType, true),StructField("Age", LongType, true)))
+    val etudDF = spark.createDataFrame(etudRDD,schema)
+    return etudDF
+  }
+
+  //------------------Création à partir d’un fichier CSV
+
+  def createDF_CSV(spark: SparkSession, path: String): DataFrame = {
+    //val movies = spark.read.option("header","true").csv(path)
+    val movieSchema = StructType(Array(StructField("actor_name", StringType,
+      true), StructField("movie_title", StringType, true), StructField("produced_year",
+      LongType, true)))
+    val moviesDF = spark.read.options(Map("header" -> "true", "delimiter" -> ","
+      , "inferschema" -> "true")).schema(movieSchema).csv(path)
+    return moviesDF
+  }
+//-----------------Création à partir d’un fichier JSON
+ def createDF_JSON(spark: SparkSession, path: String): DataFrame = {
+    val movieSchema = StructType(Array(StructField("actor_name", StringType, true),
+    StructField("movie_title", StringType, true), StructField("produced_year",
+      BooleanType, true)))
+  val moviesDF = spark.read.schema(movieSchema).option("inferSchema","true")
+    .option("mode","failFast").json(path)
+  return moviesDF
+}
+  /*def createDF_DB(spark: SparkSession): DataFrame = {
+    val mysqlURL = "jdbc:mariadb://127.0.0.1:3305/movies"
+    val filmDF =
+      spark.read.format("jdbc").option("driver","org.mariadb.jdbc.Driver")
+        .option("url", mysqlURL).option("dbtable", "movie").option("user", "root")
+        .option("password", "admin").load()
+    return filmDF
+  }
+```
+
+![Image 1](image/base-donnée.png.png)
+![Image 2](image/manipulation1.png)
+
+
+```scala
   //-------------II. Manipulation des DataFrames-----------------------
   def add_column(df: DataFrame): DataFrame = {
     // Ajouter une nouvelle colonne avec une valeur constante
@@ -80,6 +140,13 @@ import scala.collection.immutable.Seq
     sample1
      //return sample2
   }
+```
+![Image 1](image/3.png)
+![Image 2](image/4.png)
+![Image 3](image/5.png)
+![Image 4](image/6.png)
+
+```scala
   def select_Version(spark : SparkSession, df : DataFrame) : DataFrame = {
     import spark.implicits._
     val df1 = df.select('movie_title, ('produced_year - ('produced_year %
@@ -97,18 +164,33 @@ import scala.collection.immutable.Seq
     petitsDFs
   }
 ```
+</div>
+<div align="center">
+    <img src="image/selecteddf.png" alt="Logo" width="500" height="400">
+  
 ```scala
   def selectExpr_Version(df: DataFrame): DataFrame = {
     val df1 = df.selectExpr("*", "(produced_year - (produced_year % 10)) as decade")
     return df1
   }
 ```
+</div>
+<div align="center">
+    <img src="image/selectedexp.png" alt="Logo" width="500" height="400">
+ 
+</div>
+
+
 ```scala
   def selectExpr_Version2(df: DataFrame): DataFrame = {
     val df1 = df.selectExpr("count(distinct(movie_title)) as movies_nbr", " count (distinct(actor_name)) as actors_nbr")
     return df1
   }
 ```
+</div>
+<div align="center">
+    <img src="image/selectdexp2.png" alt="Logo" width="500" height="400">
+
 ```scala
   def filtrage(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
@@ -119,7 +201,13 @@ import scala.collection.immutable.Seq
     val df4 = df.filter('produced_year >= 2000).filter(functions.length('movie_title) > 10)
     return df4 //return df3 // return df2 // return df1
   }
+```
+</div>
+<div align="center">
+    <img src="image/filtrage.png" alt="Logo" width="500" height="400">
+  
 
+```scala
   def drop_fct(df: DataFrame): DataFrame = {
     val df1 = df.select("movie_title").distinct.selectExpr("count(movie_title) as movies")
     val df2 = df.dropDuplicates("movie_title").selectExpr("count(movie_title) as movies")
@@ -138,6 +226,11 @@ import scala.collection.immutable.Seq
     return df3 //return df2 // return df1
   }
 ```
+<div align="center">
+    <img src="image/tri_fct.png" alt="Logo" width="500" height="400">
+  
+</div>
+
 ```scala
   def limit_fct(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
@@ -149,6 +242,10 @@ import scala.collection.immutable.Seq
     return df_limit
   }
 ```
+</div>
+<div align="center">
+    <img src="image/limit_fct.png" alt="Logo" width="500" height="400">
+
 ```scala
   def union_fct(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
@@ -163,6 +260,13 @@ import scala.collection.immutable.Seq
     val union_DF = movie_selected.union(addedActor_DF)
     return union_DF
   }
+```
+<div align="center">
+    <img src="image/union_fct.png" alt="Logo" width="500" height="400">
+  
+</div>
+
+```scala
 
   def drop_nullEntries(spark: SparkSession, df: DataFrame): DataFrame = {
     // créer d'abord un DataFrame avec des valeurs manquantes
@@ -189,6 +293,10 @@ import scala.collection.immutable.Seq
     return desc
   }
 ```
+</div>
+<div align="center">
+    <img src="image/describe.png" alt="Logo" width="500" height="400">
+    
 ##DataSets:
 ```scala
 //---------III. DataSets-------------------------
@@ -222,6 +330,10 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     return MoviesDS
   }
 ```
+</div>
+<div align="center">
+    <img src="image/dataset1ET2.png" alt="Logo" width="500" height="400">
+  
 ```scala
   def DS_filter(spark: SparkSession, df: DataFrame): Dataset[Movie] = {
     import spark.implicits._
@@ -231,6 +343,10 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     return DS_filter
   }
 ```
+</div>
+<div align="center">
+    <img src="image/ds_filter.png" alt="Logo" width="500" height="400">
+    
 ```scala
   def DS_Manipulation(spark: SparkSession, df: DataFrame): Dataset[(String, Long)] = {
     import spark.implicits._
@@ -250,9 +366,13 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     //error: value - is not a member of String
     //return DS2 // return DF1
   }
+```
 
+</div>
+<div align="center">
+    <img src="image/ds_manipulation.png" alt="Logo" width="500" height="400">
 
-   */
+```scala
   def SQL_Use_Case(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
     // Enregistrer le DataFrame en tant que vue temporaire
@@ -276,6 +396,11 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     return selected_DF4 // selected_DF3 //selected_DF2 //selected_DF1
   }
 ```
+
+</div>
+<div align="center">
+    <img src="image/sqlusecase.png" alt="Logo" width="500" height="400">
+
 ```scala
   def sauvegarde_df(spark: SparkSession, df: DataFrame): Unit = {
     // Ecrire les données dans le format CSV, en utilisant # comme délimiteur
@@ -284,6 +409,9 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     //Écrire les données en utilisant la partition par la colonne produced_year df.write.format("csv").mode("overwrite").option("sep", ";").partitionBy("produced_year").save(" E :/ Apache Spark / Ateliers_Spark / Atelier3 / CSV_OUTPUT_3")
   }
   ```
+</div>
+<div align="center">
+    <img src="image/Sauvegarde-df.png" alt="Logo" width="500" height="400">
 
 <p align="center">
      <img src="image/base-donnée.png">
@@ -377,87 +505,24 @@ val df3 = createDF_byRow(spark)
 
 ```
  <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-    <img src="image/image/base-donnée.png" alt="Logo" width="500" height="400">
+
   
-</div>
-<div align="center">
-    <img src="image/6.png" alt="Logo" width="500" height="400">
+
+
   
-</div>
-<div align="center">
-    <img src="image/5.png" alt="Logo" width="500" height="400">
+
+
   
-</div>
-<div align="center">
-    <img src="image/4.png" alt="Logo" width="500" height="400">
+
   
-</div>
-<div align="center">
-    <img src="image/3.png" alt="Logo" width="500" height="400">
+
   
-</div>
-<div align="center">
-    <img src="image/Sauvegarde-df.png" alt="Logo" width="500" height="400">
+
   
-</div>
-<div align="center">
-    <img src="image/dataset1ET2.png" alt="Logo" width="500" height="400">
+
   
-</div>
-<div align="center">
-    <img src="image/describe.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/adddialog ui.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/ds_filter.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/ds_manipulation.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/filtrage.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/limit_fct.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/manipulation1.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/selectdexp2.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/selecteddf.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/selectedexp.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/sqlusecase.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/tri_fct.png" alt="Logo" width="500" height="400">
-  
-</div>
-<div align="center">
-    <img src="image/union_fct.png" alt="Logo" width="500" height="400">
-  
-</div>
+
+
 
 
 
