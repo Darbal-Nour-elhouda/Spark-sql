@@ -16,7 +16,7 @@
   <ol>
         <li><a href="#introduction">Introduction</a></li>
         <li><a href="#objectifs">Objectifs</a></li>
-        <li><a href="#code_et_outputs">code_et_outputs</a></li>
+        <li><a href="#Code et Outputs">Code et Outputs</a></li>
        
   </ol>
 </details>
@@ -29,7 +29,7 @@ Spark SQL est un élément clé du framework Apache Spark, fournissant une inter
 L'objectif principal de cette première section est de présenter les bases de Spark SQL en mettant en avant son abstraction de base, ses opérations structurées de manipulation de données et les différentes sources de données prises en charge pour la lecture et l'écriture. L'apprentissage de la création de DataFrames par transformation d'un RDD, programmation ou chargement de données de sources externes est l'un des objectifs spécifiques. De plus, il vise à familiariser les participants avec l'utilisation de l'API DataFrame pour des tâches telles que la sélection, le filtrage, le tri et le regroupement de données, l'application de fonctions SQL sur les DataFrames, la conversion des DataFrames en RDD et l'enregistrement des données dans des sources externes.Enfin, cette section présente un aperçu des DataSets qui ont été introduits avec Spark 1.6. Il explique également comment créer des DataFrames à partir de requêtes SQL et comment exécuter ces requêtes sur les données DataFrame. Pour une compréhension approfondie de ces concepts, une connaissance de base de SQL est recommandée.
 
   
-- ## [Code et Outputs](#code_et_outputs)
+- ## [Code et Outputs](#Code et Outputs)
    # Librairies et Config:
 ```scala
 import org.apache.spark.sql.functions.{col, count, lit}
