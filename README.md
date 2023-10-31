@@ -96,17 +96,20 @@ import scala.collection.immutable.Seq
     val petitsDFs = df.randomSplit(Array(0.5, 0.3, 0.2))
     petitsDFs
   }
-
+```
+```scala
   def selectExpr_Version(df: DataFrame): DataFrame = {
     val df1 = df.selectExpr("*", "(produced_year - (produced_year % 10)) as decade")
     return df1
   }
-
+```
+```scala
   def selectExpr_Version2(df: DataFrame): DataFrame = {
     val df1 = df.selectExpr("count(distinct(movie_title)) as movies_nbr", " count (distinct(actor_name)) as actors_nbr")
     return df1
   }
-
+```
+```scala
   def filtrage(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
     val df1 = df.filter('produced_year === 1990)
@@ -122,7 +125,8 @@ import scala.collection.immutable.Seq
     val df2 = df.dropDuplicates("movie_title").selectExpr("count(movie_title) as movies")
     return df1
   }
-
+```
+```scala
   def tri_fcts(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
     val df_base = df.dropDuplicates("movie_title").selectExpr("movie_title"
@@ -133,7 +137,8 @@ import scala.collection.immutable.Seq
     val df3 = df_base.orderBy('title_length.desc, 'produced_year)
     return df3 //return df2 // return df1
   }
-
+```
+```scala
   def limit_fct(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
     // Creation du DataFrame avec nom acteur et sa longueur associée
@@ -143,7 +148,8 @@ import scala.collection.immutable.Seq
     val df_limit = df_actname.orderBy('length.desc).limit(10)
     return df_limit
   }
-
+```
+```scala
   def union_fct(spark: SparkSession, df: DataFrame): DataFrame = {
     import spark.implicits._
     // Selectionner les films que nous voulons ajouter l'acteur manquant ("12")
@@ -176,7 +182,8 @@ import scala.collection.immutable.Seq
     val df5 = badMDF.na.fill("EMPTY", Array("actor_name"))
     return df4
   }
-
+```
+```scala
   def describe_fct(df: DataFrame): DataFrame = {
     val desc = df.describe("produced_year")
     return desc
@@ -214,7 +221,8 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     val MoviesDS = data.toDS()
     return MoviesDS
   }
-
+```
+```scala
   def DS_filter(spark: SparkSession, df: DataFrame): Dataset[Movie] = {
     import spark.implicits._
     val moviesDS = df.as[Movie]
@@ -222,6 +230,8 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     val DS_filter = moviesDS.filter(movie => movie.produced_year == 2000)
     return DS_filter
   }
+```
+```scala
   def DS_Manipulation(spark: SparkSession, df: DataFrame): Dataset[(String, Long)] = {
     import spark.implicits._
     val moviesDS = df.as[Movie]
@@ -230,6 +240,7 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
     //Tapez titleYearDS.printSchema pour consulter le schema du Dataset créé
     return titleYearPairDS
   }
+
   /*def DS_Compile_Error(spark : SparkSession , df : DataFrame) : Dataset[Column] = {
     import spark.implicits._
     // 1er Cas --> le problème n'est pas détecté lors de la manipulation d'un DataFrame (jusqu'à l'exécution)
@@ -264,7 +275,8 @@ case class Movie(actor_name: String, movie_title: String, produced_year: Long)
   produced_year""".stripMargin).orderBy('count.desc)
     return selected_DF4 // selected_DF3 //selected_DF2 //selected_DF1
   }
-
+```
+```scala
   def sauvegarde_df(spark: SparkSession, df: DataFrame): Unit = {
     // Ecrire les données dans le format CSV, en utilisant # comme délimiteur
     df.write.format("csv").option("sep", "#").save("E:/Apache Spark / Ateliers_Spark / Atelier 3 / CSV_OUTPUT")
